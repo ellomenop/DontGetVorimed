@@ -27,7 +27,7 @@ end, DontGetVorimed)
 ModUtil.WrapBaseFunction("CreateLoot", function( baseFunc, args )
     local lootData = args.LootData or LootData[args.Name]
     local loot = nil
-    if config.Enabled and not lootData.GodLoot and not DontGetVorimed.BoonTakenFlag then
+    if DontGetVorimed.config.Enabled and not lootData.GodLoot and not DontGetVorimed.BoonTakenFlag then
         LootChoiceExt.Choices = 3
         LootChoiceExt.LastLootChoices = 3
         loot = baseFunc(args)
@@ -42,7 +42,7 @@ end, DontGetVorimed)
 
 -- After first boon reward has been selected, return to normal number of choices
 ModUtil.WrapBaseFunction("HandleUpgradeChoiceSelection", function ( baseFunc, screen, button )
-    if config.Enabled and not DontGetVorimed.BoonTakenFlag and #GetAllUpgradeableGodTraits() == 0 then
+    if DontGetVorimed.config.Enabled and not DontGetVorimed.BoonTakenFlag and #GetAllUpgradeableGodTraits() == 0 then
         if button.Data.God ~= nil then
             LootChoiceExt.Choices = 3
             LootChoiceExt.LastLootChoices = 3
