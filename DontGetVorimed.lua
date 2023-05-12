@@ -9,7 +9,7 @@ ModUtil.RegisterMod("DontGetVorimed")
 
 local config = {
     ModName = "Dont Get Vorimed",
-    Enabled = true
+    Enabled = false,
 }
 DontGetVorimed.config = config
 DontGetVorimed.BoonTakenFlag = nil
@@ -40,7 +40,6 @@ ModUtil.WrapBaseFunction("CreateLoot", function( baseFunc, args )
     return loot
 end, DontGetVorimed)
 
-
 -- After first boon reward has been selected, return to normal number of choices
 ModUtil.WrapBaseFunction("HandleUpgradeChoiceSelection", function ( baseFunc, screen, button )
     if config.Enabled and not DontGetVorimed.BoonTakenFlag and #GetAllUpgradeableGodTraits() == 0 then
@@ -66,7 +65,7 @@ end, DontGetVorimed)
 -- If the player ever rerolls, reduce to 3 options
 ModUtil.WrapBaseFunction("DestroyBoonLootButtons", function ( baseFunc, lootData )
     baseFunc(lootData)
-    if config.Enabled and lootData.GodLoot and not DontGetVorimed.BoonTakenFlag then
+    if DontGetVorimed.config.Enabled and lootData.GodLoot and not DontGetVorimed.BoonTakenFlag then
         LootChoiceExt.Choices = 3
         LootChoiceExt.LastLootChoices = 3
         DontGetVorimed.BoonTakenFlag = true
