@@ -26,12 +26,18 @@ end, DontGetVorimed)
 
 ModUtil.WrapBaseFunction("CreateLoot", function( baseFunc, args )
     local lootData = args.LootData or LootData[args.Name]
+    local loot = nil
     if DontGetVorimed.config.Enabled and not lootData.GodLoot and not DontGetVorimed.BoonTakenFlag then
         LootChoiceExt.Choices = 3
         LootChoiceExt.LastLootChoices = 3
+        loot = baseFunc(args)
+        LootChoiceExt.Choices = 4
+        LootChoiceExt.LastLootChoices = 4
+    else
+        loot = baseFunc(args)
     end
 
-    return baseFunc(args)
+    return loot
 end, DontGetVorimed)
 
 -- After first boon reward has been selected, return to normal number of choices
@@ -41,10 +47,6 @@ ModUtil.WrapBaseFunction("HandleUpgradeChoiceSelection", function ( baseFunc, sc
             LootChoiceExt.Choices = 3
             LootChoiceExt.LastLootChoices = 3
             DontGetVorimed.BoonTakenFlag = true
-        else
-            -- reset to 4 options after selecting a hammer/chaos before first boon has been taken
-            LootChoiceExt.Choices = 4
-            LootChoiceExt.LastLootChoices = 4
         end
     end
 
